@@ -1,16 +1,19 @@
 #!/usr/bin/env ruby
 
-path = File.path(ARGV.first)
+path = File.path(ARGV[0])
+reverse = ARGV[1] == "reverse"
 commits = File.readlines(path, chomp: true).map do |line|
-  line.split("pick ")[1].split(" ")[0]
+  line.split(/\s\d{4}-\d{2}-\d{2}/)[0].split(/\s/)[-1]
 end
+
+commits.reverse! if reverse
 
 puts "Processing #{commits.length} commits."
 
 puts "First commit sha is: #{commits[0]}"
 puts "Last commit sha is: #{commits[-1]}"
 
-File.open("reordered_commits_#{Time.now.to_i}.txt", "w") do |file|
+File.open("prepared_commits_#{Time.now.to_i}.txt", "w") do |file|
   commits.each do |commit|
     file << commit + "\n"
   end
