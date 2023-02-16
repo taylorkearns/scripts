@@ -3,7 +3,7 @@
 path = File.path(ARGV[0])
 reverse = ARGV[1] == "reverse"
 commits = File.readlines(path, chomp: true).map do |line|
-  line.split(/\s\d{4}-\d{2}-\d{2}/)[0].split(/\s/)[-1]
+  line.split("pick")[-1].strip.split[0]
 end
 
 commits.reverse! if reverse
